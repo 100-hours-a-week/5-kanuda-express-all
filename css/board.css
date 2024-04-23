@@ -44,4 +44,27 @@ img {
     width: 36px;
     height: 36px;
     border-radius: 50%;
+    padding: 7px;
+}
+.post-title {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 31.2px;
+}
+.post-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18.2px;
+}
+.post-writer {
+    display: flex;
+    flex-direction: row;
+}
+.writer-name {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 19.5px;
 }
