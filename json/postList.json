@@ -1,0 +1,25 @@
+{
+    "items": [
+        {
+            "title": "json 제목1",
+            "reaction": "좋아요 0 댓글 0 조회수 0",
+            "time": "2024-04-19 00:00:00",
+            "writerPic": "https://randomuser.me/api/portraits/men/4.jpg",
+            "writerName": "작성자1"
+        },
+        {
+            "title": "json 제목2",
+            "reaction": "좋아요 2 댓글 0 조회수 0",
+            "time": "2024-04-20 00:00:00",
+            "writerPic": "https://randomuser.me/api/portraits/men/12.jpg",
+            "writerName": "작성자2"
+        },
+        {
+            "title": "json 제목3",
+            "reaction": "좋아요 3 댓글 0 조회수 0",
+            "time": "2024-04-30 00:00:00",
+            "writerPic": "https://randomuser.me/api/portraits/men/92.jpg",
+            "writerName": "작성자3"
+        }
+    ]
+}
