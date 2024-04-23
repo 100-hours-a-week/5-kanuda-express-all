@@ -35,7 +35,7 @@ function displayPostList(items) {
 
 function createPostListHTML(item) {
     return `
-        <article class="post-box">
+        <article class="post-box" onclick="window.location.href='postDetail.html?postId=${item.postId}'">
             <div class="post-detail">
                 <div class="post-title">${item.title}</div>
                 <div class="post-info">
