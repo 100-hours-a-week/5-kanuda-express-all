@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     loadPostDetail().then((items) => {
-        console.log(items);
         displayPostDetail(items);
     }).then(()=>init());
     
@@ -22,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function createPostDetail(item) {
-        console.log(item);
         return `
             <div class="title">
                 <p><b>${item.title}</b></p>
@@ -61,6 +59,51 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                 </div>
             </div>
+        `;
+    }
+
+    fetch("/json/commentList.json")
+    .then(res => res.json())
+    .then(jsonData => jsonData.items)
+    .then(items => {
+        createComment(items.filter(item => item.postId == postId));
+    });
+
+    function createComment(comments) {
+        console.log(comments)
+        comments.forEach(element => {
+            console.log(element)
+            const container = document.getElementById('comment-list');
+            container.innerHTML += makeCommentTag(element);
+        });
+    }
+
+    function makeCommentTag(item) {
+        return `
+            <div class="comment">
+                <div class="comment-info">
+                    <img class="writer-img" src="${item.writerPic}">
+                    <div class="comment-text">
+                        <div class="cmt-writer-info">
+                            <div>
+                                <p><b>${item.writerName}</b></p>
+                            </div>
+                            <div>
+                                <p>${item.time}</p>
+                            </div>
+                        </div>
+                        <div class="cmt-detail">
+                            <p>${item.comment}</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <button id="comment-modify-btn" class="btn">수정</button>
+                        <button id="comment-delete-btn" class="btn">삭제</button>
+                    </div>
+                </div>
+            </dv>
         `;
     }
     
@@ -126,7 +169,7 @@ function init() {
         }
         btnActive();
     })
-    
+
     function btnActive() {
         if(commentFlag) {
             commentBtn.classList.remove('btn-inactive');
