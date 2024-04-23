@@ -39,7 +39,7 @@ function createPostListHTML(item) {
             <div class="post-detail">
                 <div class="post-title">${item.title}</div>
                 <div class="post-info">
-                    <p class="post-reaction">${item.reaction}</p>
+                    <p class="post-reaction">좋아요 ${numFormat(item.like)} 댓글 ${numFormat(item.comment)} 조회수 ${numFormat(item.view)}</p>
                     <p class="post-time">${item.time}</p>
                 </div>
             </div>
@@ -50,4 +50,11 @@ function createPostListHTML(item) {
             </div>
         </article>
     `;
+}
+
+function numFormat(num) {
+    if(num >= 1000) {
+        return num/1000 + "K";
+    }
+    return num;
 }
