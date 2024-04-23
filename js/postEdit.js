@@ -72,3 +72,18 @@ document.getElementById('file').addEventListener('change', function() {
         document.getElementById('file-name').innerText = "파일을 선택해주세요.";
     }
 })
+
+const postId = new URLSearchParams(window.location.search).get('postId');
+
+fetch("/json/postDetail.json")
+.then(data => data.json())
+.then(jsonData => jsonData.items)
+.then(items => {
+    items.filter(item=>item.postId == postId)
+        .map(item => {
+            titleInput.value = item.title;
+            contentInput.value = item.postContent;
+            // 파일도 해야함.
+            document.getElementById('file-name').innerText = item.postPic;
+        })
+});
