@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     loadPostDetail().then((items) => {
         displayPostDetail(items);
-    }).then(()=>init());
+    });
     
 
     function displayPostDetail(items) {
@@ -67,12 +67,10 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(jsonData => jsonData.items)
     .then(items => {
         createComment(items.filter(item => item.postId == postId));
-    });
+    }).then(()=>init());
 
     function createComment(comments) {
-        console.log(comments)
         comments.forEach(element => {
-            console.log(element)
             const container = document.getElementById('comment-list');
             container.innerHTML += makeCommentTag(element);
         });
@@ -99,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
                 <div>
                     <div>
-                        <button id="comment-modify-btn" class="btn">수정</button>
-                        <button id="comment-delete-btn" class="btn">삭제</button>
+                        <button id="comment-modify-btn" class="btn comment-modify-btn">수정</button>
+                        <button id="comment-delete-btn" class="btn comment-delete-btn">삭제</button>
                     </div>
                 </div>
             </dv>
@@ -115,8 +113,8 @@ window.onload = function() {
 
 function init() {
     const postDeleteBtn = document.getElementById('post-delete-btn');
-    const commentModifyBtn = document.getElementById('comment-modify-btn');
-    const commentDeleteBtn = document.getElementById('comment-delete-btn');
+    const commentModifyBtn = document.getElementsByClassName('comment-modify-btn');
+    const commentDeleteBtn = document.getElementsByClassName('comment-delete-btn');
     const postDeleteModal = document.getElementById('post-modal');
     const commentDeleteModal = document.getElementById('comment-modal');
     const postModalCancelBtn = document.getElementById('post-modal-cancel-btn');
@@ -142,12 +140,21 @@ function init() {
     })
 
     // 댓글 수정 버튼
-    commentModifyBtn.addEventListener('click', function() {
-        // 댓글 수정 로직
+    Array.from(commentModifyBtn).forEach(item => {
+        item.addEventListener('click', function() {
+            var prevText = item.parentNode.parentNode
+                    .previousElementSibling.lastElementChild
+                    .lastElementChild.firstElementChild.innerText;
+            document.getElementById('comment-input').value = prevText;
+            document.getElementById('comment-input').focus();
+        })
     })
 
-    commentDeleteBtn.addEventListener('click', function() {
-        commentDeleteModal.classList.add('on');
+    // 댓글 삭제 버튼
+    Array.from(commentDeleteBtn).forEach(item => {
+        item.addEventListener('click', function() {
+            commentDeleteModal.classList.add('on');
+        })
     })
 
     commentModalCancelBtn.addEventListener('click', function() {
