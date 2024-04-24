@@ -10,15 +10,15 @@ writeBtn.addEventListener('mouseout', function() {
     writeBtn.classList.remove('btn-active');
 })
 writeBtn.addEventListener('click', function() {
-    location.href='/html/postWrite.html';
+    location.href='postWrite.html';
 })
 
 post1.addEventListener('click', function() {
-    location.href='/html/postDetail.html';
+    location.href='postDetail.html';
 })
 
 function loadPostList() {
-    return fetch("/json/postList.json")
+    return fetch("../../models/json/postList.json")
         .then( (res) => res.json())
         .then( (json) => json.items);
 }

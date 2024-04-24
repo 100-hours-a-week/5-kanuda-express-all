@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // json 에서 id 값 가져와서 화면 그리기
     function loadPostDetail() {
-        return fetch("/json/postDetail.json")
+        return fetch("../../models/json/postDetail.json")
             .then( (res) => res.json())
             .then( (json) => json.items);
     }
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <hr class="inbody-hr">
             <div class="post-body">
-                <img class="post-img" src="${item.postPic}">
+                <img class="post-img" src="../${item.postPic}">
                 <div class="post-content">
                     <p>
                         ${item.postContent}
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
-    fetch("/json/commentList.json")
+    fetch("../../models/json/commentList.json")
     .then(res => res.json())
     .then(jsonData => jsonData.items)
     .then(items => {

@@ -153,7 +153,7 @@ document.getElementById('prev-btn').addEventListener('click', function() {
 let userList = "";
 loadUserList();
 function loadUserList() {
-    return fetch("/json/userList.json")
+    return fetch("../../models/json/userList.json")
         .then( (res) => res.json())
         .then( (json) => json.items);
 }
