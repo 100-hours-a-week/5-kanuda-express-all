@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // json 에서 id 값 가져와서 화면 그리기
     function loadPostDetail() {
-        return fetch("../../models/json/postDetail.json")
+        return fetch("http://localhost:3001/models/json/postDetail.json")
             .then( (res) => res.json())
             .then( (json) => json.items);
     }
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
-    fetch("../../models/json/commentList.json")
+    fetch("http://localhost:3001/models/json/commentList.json")
     .then(res => res.json())
     .then(jsonData => jsonData.items)
     .then(items => {

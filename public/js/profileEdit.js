@@ -70,7 +70,7 @@ modalConfirmBtn.addEventListener('click', function() {
 let userList = "";
 loadUserList();
 function loadUserList() {
-    return fetch("../../models/json/userList.json")
+    return fetch("http://localhost:3001/models/json/userList.json")
         .then( (res) => res.json())
         .then( (json) => json.items);
 }

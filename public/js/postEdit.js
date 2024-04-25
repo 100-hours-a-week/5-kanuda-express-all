@@ -75,7 +75,7 @@ document.getElementById('file').addEventListener('change', function() {
 
 const postId = new URLSearchParams(window.location.search).get('postId');
 
-fetch("../../models/json/postDetail.json")
+fetch("http://localhost:3001/models/json/postDetail.json")
 .then(data => data.json())
 .then(jsonData => jsonData.items)
 .then(items => {

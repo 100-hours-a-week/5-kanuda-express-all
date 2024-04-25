@@ -147,13 +147,13 @@ function checkForm() {
 }
 
 document.getElementById('prev-btn').addEventListener('click', function() {
-    location.href='login.html';
+    location.href='/login';
 })
 
 let userList = "";
 loadUserList();
 function loadUserList() {
-    return fetch("../../models/json/userList.json")
+    return fetch("http://localhost:3001/models/json/userList.json")
         .then( (res) => res.json())
         .then( (json) => json.items);
 }

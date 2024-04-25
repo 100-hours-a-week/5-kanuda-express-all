@@ -18,7 +18,7 @@ post1.addEventListener('click', function() {
 })
 
 function loadPostList() {
-    return fetch("../../models/json/postList.json")
+    return fetch("http://localhost:3001/models/json/postList.json")
         .then( (res) => res.json())
         .then( (json) => json.items);
 }
@@ -35,7 +35,7 @@ function displayPostList(items) {
 
 function createPostListHTML(item) {
     return `
-        <article class="post-box" onclick="window.location.href='postDetail.html?postId=${item.postId}'">
+        <article class="post-box" onclick="window.location.href='/postDetail?postId=${item.postId}'">
             <div class="post-detail">
                 <div class="post-title">${item.title}</div>
                 <div class="post-info">

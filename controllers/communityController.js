@@ -1,8 +1,5 @@
-const express = require('express');
 const path = require('path');
-// const communityRoutes = require("../routes/communityRoutes"); 
 
-// const controllers = express.Router();
 const publicPath = path.join(__dirname, '../public');
 
 module.exports = {

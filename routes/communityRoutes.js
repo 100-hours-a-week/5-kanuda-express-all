@@ -3,10 +3,8 @@ const communityController = require("../controllers/communityController");
 
 const router = express.Router();
 
-// router.use(express.static(__dirname + '/public'));
-
 router.get("/", (req, res) => {
-    // communityController.getLogin(req, res);
+    communityController.getLogin(req, res);
 });
 
 router.get("/login", (req, res) => {
