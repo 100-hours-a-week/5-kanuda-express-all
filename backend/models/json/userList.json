@@ -1,16 +1,1 @@
-{
-    "items": [
-        {
-            "email": "test1@test.com",
-            "nickName": "test1"
-        },
-        {
-            "email": "test2@test.com",
-            "nickName": "test"
-        },
-        {
-            "email": "test2@test.com",
-            "nickName": "test3"
-        }
-    ]
-}
+{"items":[{"email":"test1@test.com","nickName":"test1"},{"email":"test2@test.com","nickName":"test2"},{"email":"test4@test.com","nickName":"test4"}]}

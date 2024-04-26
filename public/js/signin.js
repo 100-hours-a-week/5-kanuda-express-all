@@ -139,6 +139,8 @@ function btnActive() {
 
 function checkForm() {
     if(btnActive()) {
+        sendFormData();
+        location.href='/login';
         return true;
     } else {
         alert("입력 내용을 확인해주세요.");
@@ -189,3 +191,18 @@ nicknameInput.addEventListener('change', function() {
 
     }
 })
+
+function sendFormData() {
+    fetch("http://localhost:3001/models/json/userList.json", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: emailInput.value,
+            nickName: nicknameInput.value
+        })
+    })
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+}
