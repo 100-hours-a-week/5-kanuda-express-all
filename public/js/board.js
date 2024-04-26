@@ -1,6 +1,10 @@
 const writeBtn = document.getElementById('write-btn');
 const post1 = document.getElementById('post1');
 
+document.getElementById('prev-btn').addEventListener('click', function() {
+    location.href='/login';
+})
+
 writeBtn.addEventListener('mouseover', function() {
     writeBtn.classList.add('btn-active');
     writeBtn.classList.remove('btn-inactive');
@@ -10,11 +14,7 @@ writeBtn.addEventListener('mouseout', function() {
     writeBtn.classList.remove('btn-active');
 })
 writeBtn.addEventListener('click', function() {
-    location.href='postWrite.html';
-})
-
-post1.addEventListener('click', function() {
-    location.href='postDetail.html';
+    location.href='/postWrite';
 })
 
 function loadPostList() {

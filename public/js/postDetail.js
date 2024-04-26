@@ -126,6 +126,10 @@ function init() {
     const commentBtn = document.getElementById('comment-btn');
     let commentFlag = false;
 
+    document.getElementById('prev-btn').addEventListener('click', function() {
+        location.href='/board';
+    })
+
     postDeleteBtn.addEventListener('click', function() {
         postDeleteModal.classList.add('on');
     })
