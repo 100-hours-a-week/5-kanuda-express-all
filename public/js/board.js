@@ -18,7 +18,7 @@ writeBtn.addEventListener('click', function() {
 })
 
 function loadPostList() {
-    return fetch("http://localhost:3001/models/json/postList.json")
+    return fetch("http://localhost:3001/models/json/postDetail.json")
         .then( (res) => res.json())
         .then( (json) => json.items);
 }
@@ -45,7 +45,7 @@ function createPostListHTML(item) {
             </div>
             <hr class="post-hr">
             <div class="post-writer">
-                <img src="${item.writerPic}">
+                <img src="./sources/${item.writerPic}">
                 <p class="writer-name">${item.writerName}</p>
             </div>
         </article>

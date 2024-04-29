@@ -50,7 +50,8 @@ submitBtn.addEventListener('click', function() {
 
 function checkForm() {
     if(btnActive()) {
-        return true;
+        sendFormData();
+        return false;
     } else {
         alert("입력 내용을 확인해주세요.");
         return false;
@@ -66,3 +67,26 @@ document.getElementById('file').addEventListener('change', function() {
         document.getElementById('file-name').innerText = "파일을 선택해주세요.";
     }
 })
+
+function sendFormData() {
+    const formData = new FormData();
+    formData.append('title', titleInput.value);
+    formData.append('postContent', contentInput.value);
+    formData.append('postPic', document.getElementById('file-name').innerText);
+    formData.append('like', 0);
+    formData.append('comment', 0);
+    formData.append('view', 0);
+    formData.append('time', "2024-04-20 00:00:00");
+    formData.append('writerPic', "profile_img.jpeg");
+    formData.append('writerName', "작성자1"); // 나중에 세션 구현하면 세션에서 닉네임 가져다쓰기
+    formData.append('image', document.getElementById('file').files[0]);
+
+    fetch('http://localhost:3001/models/json/postList.json', {
+        method: 'POST',
+        headers: {},
+        body: formData,
+    })
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+
+}

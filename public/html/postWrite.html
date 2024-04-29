@@ -29,7 +29,7 @@
         </div>
     </div>
     <hr>
-    <form class="body" onsubmit="return checkForm()">
+    <form id="form" class="body" onsubmit="return checkForm()">
         <div class="title">
             <p>게시글 작성</p>
         </div>
@@ -37,13 +37,13 @@
             <p><b>제목*</b></p>
         </div>
         <div class="center">
-            <input id="title-input" type="text" class="input-box" placeholder="제목을 입력해주세요.(최대 26글자)">
+            <input id="title-input" type="text" class="input-box" name="title" placeholder="제목을 입력해주세요.(최대 26글자)">
         </div>
         <div class="title2">
             <p><b>내용*</b></p>
         </div>
         <div>
-            <textarea id="content-input" placeholder="내용을 입력해주세요."></textarea>
+            <textarea id="content-input" name="content" placeholder="내용을 입력해주세요."></textarea>
             <p id="helper" class="helper-text"></p>
         </div>
         <div class="title2">
@@ -52,7 +52,7 @@
         <div class="horizontal">
             <div class="filebox">
                 <label for="file">파일 찾기</label>
-                <input id="file" type="file">
+                <input id="file" type="file" name="image">
                 <p id="file-name" class="file-msg">파일을 선택해주세요.</p>
             </div>
         </div>

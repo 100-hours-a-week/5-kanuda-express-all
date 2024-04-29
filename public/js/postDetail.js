@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="post-header">
                 <div class="writer-info">
                     <div class="writer-img">
-                        <img class="writer-img" src="${item.writerPic}">
+                        <img class="writer-img" src="../sources/${item.writerPic}">
                     </div>
                     <div class="writer-name">
                         <p><b>${item.writerName}</b></p>
@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                 </div>
                 <div>
-                    <button id="post-modify-btn" class="btn" onclick="window.location.href='./postEdit.html?postId=1'">수정</button>
+                    <button id="post-modify-btn" class="btn" onclick="window.location.href='/postEdit/${item.postId}'">수정</button>
                     <button id="post-delete-btn" class="btn">삭제</button>
                 </div>
             </div>
             <hr class="inbody-hr">
             <div class="post-body">
-                <img class="post-img" src="../${item.postPic}">
+                <img class="post-img" src="../sources/${item.postPic}">
                 <div class="post-content">
                     <p>
                         ${item.postContent}
