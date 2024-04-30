@@ -65,8 +65,16 @@ router.delete('/post/:id', (req, res) => {
     postController.deletePost(req, res);
 });
 
+router.post('/comment/:postId', (req, res) => {
+    postController.postComment(req, res);
+});
+
+router.put('/comment/:postId/:commentId', (req, res) => {
+    postController.putComment(req, res);
+});
+
 router.delete('/comment/:postId/:commentId', (req, res) => {
     postController.deleteComment(req, res);
-})
+});
 
 module.exports = router;

@@ -124,6 +124,7 @@ function init() {
 
     const commentInput = document.getElementById('comment-input');
     const commentBtn = document.getElementById('comment-btn');
+    const commentModifyFetchBtn = document.getElementById('comment-modify-btn');
     let commentFlag = false;
 
     document.getElementById('prev-btn').addEventListener('click', function() {
@@ -143,6 +144,11 @@ function init() {
         deletePost();
     })
 
+    // 댓글 등록 버튼
+    commentBtn.addEventListener('click', function() {
+        postComment();
+    });
+
     // 댓글 수정 버튼
     Array.from(commentModifyBtn).forEach(item => {
         item.addEventListener('click', function() {
@@ -151,7 +157,17 @@ function init() {
                     .lastElementChild.firstElementChild.innerText;
             document.getElementById('comment-input').value = prevText;
             document.getElementById('comment-input').focus();
+
+            commentBtn.style.display = 'none';
+            commentModifyFetchBtn.style.display = 'block';
+
+            selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
         })
+    })
+
+    // 댓글 수정 등록 버튼
+    commentModifyFetchBtn.addEventListener('click', function() {
+        putComment();
     })
 
     let selectedCommentId = 0;
@@ -171,7 +187,6 @@ function init() {
 
     // 댓글 삭제 모달 > 확인 버튼
     commentModalConfirmBtn.addEventListener('click', function() {
-        // 댓글 삭제 로직
         deleteComment();
     })
 
@@ -190,10 +205,14 @@ function init() {
         if(commentFlag) {
             commentBtn.classList.remove('btn-inactive');
             commentBtn.classList.add('btn-active');
+            commentModalConfirmBtn.classList.remove('btn-inactive');
+            commentModalConfirmBtn.classList.add('btn-active');
             return true;
         } else {
             commentBtn.classList.add('btn-inactive');
             commentBtn.classList.remove('btn-active');
+            commentModalConfirmBtn.classList.add('btn-inactive');
+            commentModalConfirmBtn.classList.remove('btn-active');
             return false;
         }
     }
@@ -210,15 +229,59 @@ function init() {
         .then(window.location.href = '/board');
     }
 
+    function postComment() {
+        // 왜 formData 로 받으면 body가 비워져있을까...?
+        // const formData = new FormData();
+        // formData.append('postId', postId);
+        // formData.append('comment', commentInput.value);
+        // formData.append('time', "2024-04-20 00:00:00");
+        // formData.append('writerPic', "profile_img.jpeg");
+        // formData.append('writerName', "작성자1"); // 나중에 세션 구현하면 세션에서 닉네임 가져다쓰기
+
+        fetch(`http://localhost:3001/comment/${postId}`, {
+            method: 'POST',
+            // headers: {},
+            // body: formData,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'postId': postId,
+                'comment': commentInput.value,
+                'time': "2024-04-20 00:00:00",
+                'writerPic': "profile_img.jpeg",
+                'writerName': "작성자1"
+            })
+        })
+        .then((response) => response.json())
+        .then((json) => console.log(json))
+        .then(window.location.href = `/postDetail?postId=${postId}`);
+    }
+
     function deleteComment() {
-        selectedCommentId
         fetch(`http://localhost:3001/comment/${postId}/${selectedCommentId}`, {
             method: 'DELETE',
             headers: {},
         })
         .then((response) => response.json())
         .then((json) => console.log(json))
-        .then(window.location.href = `/board/${postId}`);
+        .then(window.location.href = `/postDetail?postId=${postId}`);
+    }
+
+    function putComment() {
+        const formData = new FormData();
+        formData.append('comment', commentInput.value);
+        formData.append('time', '2024-04-30 12:00:00');
+
+        fetch(`http://localhost:3001/comment/${postId}/${selectedCommentId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'comment': commentInput.value,
+                'time': "2024-04-20 00:00:00",
+            })
+        })
+        .then((response) => response.json())
+        .then((json) => console.log(json))
+        .then(window.location.href = `/postDetail?postId=${postId}`);
     }
 }
 
