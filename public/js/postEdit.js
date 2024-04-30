@@ -24,7 +24,7 @@ titleInput.addEventListener('keyup', function() {
 contentInput.addEventListener('keyup', function() {
     contentFlag = false;
     if(contentInput.value.length == 0) {
-
+        
     } else {
         contentFlag = true;
         if(titleInput.value.length != 0) {
@@ -48,7 +48,7 @@ function btnActive() {
 
 modifyBtn.addEventListener('click', function() {
     if(btnActive()) {
-        
+        checkForm();
     } else {
         helper.innerText = "* 제목, 내용을 모두 작성해주세요.";
     }
@@ -56,7 +56,8 @@ modifyBtn.addEventListener('click', function() {
 
 function checkForm() {
     if(btnActive()) {
-        return true;
+        sendFormData();
+        return false;
     } else {
         alert("입력 내용을 확인해주세요.");
         return false;
@@ -87,3 +88,20 @@ fetch("http://localhost:3001/models/json/postDetail.json")
             document.getElementById('file-name').innerText = item.postPic;
         })
 });
+
+function sendFormData() {
+    const formData = new FormData();
+    formData.append('title', titleInput.value);
+    formData.append('postContent', contentInput.value);
+    formData.append('postPic', document.getElementById('file-name').innerText);
+    // 파일 수정 안됐을때 로직 변경해야할듯. 보내지 말던가?
+    formData.append('image', document.getElementById('file').files[0]);
+
+    fetch(`http://localhost:3001/post/${postId}`, {
+        method: 'PUT',
+        headers: {},
+        body: formData
+    })
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+}

@@ -51,7 +51,7 @@ submitBtn.addEventListener('click', function() {
 function checkForm() {
     if(btnActive()) {
         sendFormData();
-        return false;
+        return true;
     } else {
         alert("입력 내용을 확인해주세요.");
         return false;
@@ -72,6 +72,7 @@ function sendFormData() {
     const formData = new FormData();
     formData.append('title', titleInput.value);
     formData.append('postContent', contentInput.value);
+    // 사진이 없을땐 append 하지 않기. 그래야 불러올때 오류 안남
     formData.append('postPic', document.getElementById('file-name').innerText);
     formData.append('like', 0);
     formData.append('comment', 0);
@@ -81,7 +82,7 @@ function sendFormData() {
     formData.append('writerName', "작성자1"); // 나중에 세션 구현하면 세션에서 닉네임 가져다쓰기
     formData.append('image', document.getElementById('file').files[0]);
 
-    fetch('http://localhost:3001/models/json/postList.json', {
+    fetch('http://localhost:3001/models/json/postDetail.json', {
         method: 'POST',
         headers: {},
         body: formData,

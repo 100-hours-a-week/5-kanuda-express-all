@@ -32,9 +32,9 @@ const upload = multer({
     }),
 });
 
-router.get('/models/json/postList.json', (req, res) => {
-    postController.getPostList(req, res);
-});
+// router.get('/models/json/postList.json', (req, res) => {
+//     postController.getPostList(req, res);
+// });
 
 router.get('/models/json/postDetail.json', (req, res) => {
     postController.getPostDetail(req, res);
@@ -52,8 +52,13 @@ router.post('/models/json/userList.json', (req, res) => {
     userController.postUserList(req, res);
 });
 
-router.post('/models/json/postList.json', upload.single("image"), (req, res) => {
-    postController.postPostList(req, res);
+router.post('/models/json/postDetail.json', upload.single("image"), (req, res) => {
+    console.log("router post detail");
+    postController.postPostDetail(req, res);
+});
+
+router.put('/post/:id', upload.single("image"), (req, res) => {
+    postController.putPost(req, res);
 });
 
 module.exports = router;

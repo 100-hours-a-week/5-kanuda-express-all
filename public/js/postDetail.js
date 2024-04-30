@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
                 </div>
                 <div>
-                    <button id="post-modify-btn" class="btn" onclick="window.location.href='/postEdit/${item.postId}'">수정</button>
+                    <button id="post-modify-btn" class="btn" onclick="window.location.href='/postEdit?postId=${item.postId}'">수정</button>
                     <button id="post-delete-btn" class="btn">삭제</button>
                 </div>
             </div>
