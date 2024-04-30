@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function makeCommentTag(item) {
         return `
-            <div class="comment">
+            <div id="comment-${item.commentId}" class="comment">
                 <div class="comment-info">
                     <img class="writer-img" src="${item.writerPic}">
                     <div class="comment-text">
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <button id="comment-delete-btn" class="btn comment-delete-btn">삭제</button>
                     </div>
                 </div>
-            </dv>
+            </div>
         `;
     }
     
@@ -154,10 +154,14 @@ function init() {
         })
     })
 
+    let selectedCommentId = 0;
+
     // 댓글 삭제 버튼
     Array.from(commentDeleteBtn).forEach(item => {
         item.addEventListener('click', function() {
             commentDeleteModal.classList.add('on');
+            selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+            console.log(selectedCommentId);
         })
     })
 
@@ -168,6 +172,7 @@ function init() {
     // 댓글 삭제 모달 > 확인 버튼
     commentModalConfirmBtn.addEventListener('click', function() {
         // 댓글 삭제 로직
+        deleteComment();
     })
 
     // 댓글 유효성 검사
@@ -203,6 +208,17 @@ function init() {
         .then((response) => response.json())
         .then((json) => console.log(json))
         .then(window.location.href = '/board');
+    }
+
+    function deleteComment() {
+        selectedCommentId
+        fetch(`http://localhost:3001/comment/${postId}/${selectedCommentId}`, {
+            method: 'DELETE',
+            headers: {},
+        })
+        .then((response) => response.json())
+        .then((json) => console.log(json))
+        .then(window.location.href = `/board/${postId}`);
     }
 }
 
