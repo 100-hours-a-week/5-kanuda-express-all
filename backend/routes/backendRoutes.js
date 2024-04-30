@@ -61,4 +61,8 @@ router.put('/post/:id', upload.single("image"), (req, res) => {
     postController.putPost(req, res);
 });
 
+router.delete('/post/:id', (req, res) => {
+    postController.deletePost(req, res);
+});
+
 module.exports = router;

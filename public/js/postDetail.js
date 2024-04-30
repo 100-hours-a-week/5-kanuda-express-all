@@ -140,7 +140,7 @@ function init() {
 
     // 게시물 삭제 모달 > 확인 버튼
     postModalConfirmBtn.addEventListener('click', function() {
-        // 게시글 삭제 로직
+        deletePost();
     })
 
     // 댓글 수정 버튼
@@ -191,6 +191,18 @@ function init() {
             commentBtn.classList.remove('btn-active');
             return false;
         }
+    }
+
+    const postId = new URLSearchParams(window.location.search).get('postId');
+
+    function deletePost() {
+        fetch(`http://localhost:3001/post/${postId}`, {
+            method: 'DELETE',
+            headers: {},
+        })
+        .then((response) => response.json())
+        .then((json) => console.log(json))
+        .then(window.location.href = '/board');
     }
 }
 
