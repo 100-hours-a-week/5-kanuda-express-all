@@ -5,7 +5,7 @@ const passwordCheckHelper = document.getElementById('passwordCheck-helper');
 const modifyBtn = document.getElementById('modify-btn');
 
 // 패스워드 유효성 검사
-passwordInput.addEventListener('keyup', function() {
+passwordInput.addEventListener('keyup', () => {
     passwordFlag = false;
     if(passwordInput.value.length == 0) {
         passwordHelper.innerText = "* 비밀번호를 입력해주세요."
@@ -23,7 +23,7 @@ function passwordValidator(value) {
 }
 
 // 비밀번호 확인 유효성 검사
-passwordCheckInput.addEventListener('keyup', function() {
+passwordCheckInput.addEventListener('keyup', () => {
     passwordCheckFlag = false;
     if(passwordCheckInput.value.length == 0) {
         passwordCheckHelper.innerText = "* 비밀번호를 한번 더 입력해주세요."
@@ -38,7 +38,7 @@ passwordCheckInput.addEventListener('keyup', function() {
     btnActive();
 })
 
-function btnActive() {
+const btnActive = () => {
     if(passwordFlag && passwordCheckFlag) {
         modifyBtn.classList.remove('btn-inactive');
         modifyBtn.classList.add('btn-active');
@@ -50,7 +50,7 @@ function btnActive() {
     }
 }
 
-function checkForm() {
+const checkForm = () => {
     if(btnActive()) {
         return true;
     } else {

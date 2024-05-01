@@ -8,7 +8,7 @@ const passwordInput = document.getElementsByTagName('input')[1];
 const loginBtn = document.getElementById('login-btn');
 const helperText = document.getElementsByClassName('helper')[0];
 
-emailInput.addEventListener('keyup', function() {
+emailInput.addEventListener('keyup', () => {
     if(form.checkValidity()) {
         loginBtn.classList.remove('btn-inactive');
         loginBtn.classList.add('btn-active');
@@ -18,7 +18,7 @@ emailInput.addEventListener('keyup', function() {
     }
 });
 
-passwordInput.addEventListener('keyup', function() {
+passwordInput.addEventListener('keyup', () => {
     if(form.checkValidity()) {
         loginBtn.classList.remove('btn-inactive');
         loginBtn.classList.add('btn-active');
@@ -28,7 +28,7 @@ passwordInput.addEventListener('keyup', function() {
     }
 });
 
-loginBtn.addEventListener('click', function() {
+loginBtn.addEventListener('click', () => {
     if(!form.checkValidity()) {
         helperText.innerText = "* 입력하신 계정 정보가 정확하지 않았습니다.";
     } else {

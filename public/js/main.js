@@ -1,4 +1,4 @@
-document.getElementById('header-img').addEventListener('click', function() {
+document.getElementById('header-img').addEventListener('click', () => {
     let drop = document.getElementById('drop-down');
 
     if(drop.style.display == 'none') {

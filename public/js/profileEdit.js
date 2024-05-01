@@ -9,7 +9,7 @@ const modalConfirmBtn = document.getElementById('modal-confirm-btn');
 let nicknameFlag = false;
 
 // 닉네임 유효성 검사
-nicknameInput.addEventListener('keyup', function() {
+nicknameInput.addEventListener('keyup', () => {
     nicknameFlag = false;
     if(nicknameInput.value.length == 0) {
         nicknameHelper.innerText = "* 닉네임을 입력해주세요.";
@@ -24,7 +24,7 @@ nicknameInput.addEventListener('keyup', function() {
     btnActive();
 })
 
-function btnActive() {
+const btnActive = () => {
     if(nicknameFlag) {
         modifyBtn.classList.remove('btn-inactive');
         modifyBtn.classList.add('btn-active');
@@ -36,7 +36,7 @@ function btnActive() {
     }
 }
 
-modifyBtn.addEventListener('click', function() {
+modifyBtn.addEventListener('click', () => {
     if(nicknameFlag) {
         toastOn();
     } else {
@@ -46,45 +46,39 @@ modifyBtn.addEventListener('click', function() {
     }
 })
 
-function toastOn() {
+const toastOn = () => {
     toastMsg.classList.add('active');
     setTimeout(function() {
         toastMsg.classList.remove('active');
     }, 1000);
 }
 
-withdrawalBtn.addEventListener('click', function() {
+withdrawalBtn.addEventListener('click', () => {
     modal.classList.add('on');
 })
 
-modalCancelBtn.addEventListener('click', function() {
+modalCancelBtn.addEventListener('click', () => {
     modal.classList.remove('on');
 })
 
-modalConfirmBtn.addEventListener('click', function() {
+modalConfirmBtn.addEventListener('click', () => {
     modal.classList.remove('on');
     // 회원 탈퇴 로직 진행
 })
 
-
+// 닉네임 중복 체크
 let userList = "";
-loadUserList();
-function loadUserList() {
-    return fetch("http://localhost:3001/models/json/userList.json")
-        .then( (res) => res.json())
-        .then( (json) => json.items);
-}
+fetch("http://localhost:3001/models/json/userList.json")
+                .then( (res) => res.json() )
+                .then( (json) => json.items )
+                .then( items => userList = items );
 
-loadUserList().then((items) => {
-    userList = items;
-})
-
-function checkNickname(input) {
+const checkNickname = (input) => {
     return userList.map((item) => item.nickName)
         .find(nickname => nickname === input);
 }
 
-nicknameInput.addEventListener('change', function() {
+nicknameInput.addEventListener('change', () => {
     if(checkNickname(nicknameInput.value)) {
         nicknameHelper.innerText = "* 중복된 닉네임 입니다.";
         nicknameFlag = false;
