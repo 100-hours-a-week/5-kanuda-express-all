@@ -1,19 +1,19 @@
 const writeBtn = document.getElementById('write-btn');
 const post1 = document.getElementById('post1');
 
-document.getElementById('prev-btn').addEventListener('click', function() {
+document.getElementById('prev-btn').addEventListener('click', () => {
     location.href='/login';
 })
 
-writeBtn.addEventListener('mouseover', function() {
+writeBtn.addEventListener('mouseover', () => {
     writeBtn.classList.add('btn-active');
     writeBtn.classList.remove('btn-inactive');
 })
-writeBtn.addEventListener('mouseout', function() {
+writeBtn.addEventListener('mouseout', () => {
     writeBtn.classList.add('btn-inactive');
     writeBtn.classList.remove('btn-active');
 })
-writeBtn.addEventListener('click', function() {
+writeBtn.addEventListener('click', () => {
     location.href='/postWrite';
 })
 
@@ -25,7 +25,7 @@ fetch("http://localhost:3001/models/json/postDetail.json")
         container.innerHTML = items.map((item) => createPostListHTML(item)).join("");
     });
 
-function createPostListHTML(item) {
+const createPostListHTML = (item) => {
     return `
         <article class="post-box" onclick="window.location.href='/postDetail?postId=${item.postId}'">
             <div class="post-detail">
@@ -44,7 +44,7 @@ function createPostListHTML(item) {
     `;
 }
 
-function numFormat(num) {
+const numFormat = (num) => {
     if(num >= 1000) {
         return num/1000 + "K";
     }
