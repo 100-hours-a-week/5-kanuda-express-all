@@ -6,7 +6,7 @@ const modifyBtn = document.getElementById('modify-btn');
 let titleFlag = false;
 let contentFlag = false;
 
-titleInput.addEventListener('keyup', function() {
+titleInput.addEventListener('keyup', () => {
     titleFlag = false;
     if(titleInput.value.length == 0) {
 
@@ -21,7 +21,7 @@ titleInput.addEventListener('keyup', function() {
     btnActive();
 })
 
-contentInput.addEventListener('keyup', function() {
+contentInput.addEventListener('keyup', () => {
     contentFlag = false;
     if(contentInput.value.length == 0) {
         
@@ -34,7 +34,7 @@ contentInput.addEventListener('keyup', function() {
     btnActive();
 })
 
-function btnActive() {
+const btnActive = () => {
     if(titleFlag && contentFlag) {
         modifyBtn.classList.remove('btn-inactive');
         modifyBtn.classList.add('btn-active');
@@ -46,7 +46,7 @@ function btnActive() {
     }
 }
 
-modifyBtn.addEventListener('click', function() {
+modifyBtn.addEventListener('click', () => {
     if(btnActive()) {
         checkForm();
     } else {
@@ -54,7 +54,7 @@ modifyBtn.addEventListener('click', function() {
     }
 })
 
-function checkForm() {
+const checkForm = () => {
     if(btnActive()) {
         sendFormData();
         return false;
@@ -64,7 +64,7 @@ function checkForm() {
     }
 }
 
-document.getElementById('file').addEventListener('change', function() {
+document.getElementById('file').addEventListener('change', () => {
     let fileName = document.getElementById('file').value;
 
     if(fileName.length > 0) {
@@ -89,7 +89,7 @@ fetch("http://localhost:3001/models/json/postDetail.json")
         })
 });
 
-function sendFormData() {
+const sendFormData = () => {
     const formData = new FormData();
     formData.append('title', titleInput.value);
     formData.append('postContent', contentInput.value);

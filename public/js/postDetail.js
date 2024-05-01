@@ -1,26 +1,37 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
     const postId = new URLSearchParams(window.location.search).get('postId');
 
-    // json 에서 id 값 가져와서 화면 그리기
-    function loadPostDetail() {
-        return fetch("http://localhost:3001/models/json/postDetail.json")
-            .then( (res) => res.json())
-            .then( (json) => json.items);
-    }
+    // 게시글 내용 불러오기
+    fetch("http://localhost:3001/models/json/postDetail.json")
+        .then( res => res.json() )
+        .then( json => json.items )
+        .then( items => {
+            const container = document.getElementById('post');
+            container.innerHTML = items.filter((item) => item.postId == postId)
+                                        .map(item => createPostDetail(item))                            
+                                        .join("");
+        });
+    
+    // // json 에서 id 값 가져와서 화면 그리기
+    // function loadPostDetail() {
+    //     return fetch("http://localhost:3001/models/json/postDetail.json")
+    //         .then( (res) => res.json())
+    //         .then( (json) => json.items);
+    // }
 
-    loadPostDetail().then((items) => {
-        displayPostDetail(items);
-    });
+    // loadPostDetail().then((items) => {
+    //     displayPostDetail(items);
+    // });
     
 
-    function displayPostDetail(items) {
-        const container = document.getElementById('post');
-        container.innerHTML = items.filter((item) => item.postId == postId)
-                                    .map(item => createPostDetail(item))                            
-                                    .join("");
-    }
+    // function displayPostDetail(items) {
+    //     const container = document.getElementById('post');
+    //     container.innerHTML = items.filter((item) => item.postId == postId)
+    //                                 .map(item => createPostDetail(item))                            
+    //                                 .join("");
+    // }
 
-    function createPostDetail(item) {
+    const createPostDetail = item => {
         return `
             <div class="title">
                 <p><b>${item.title}</b></p>
@@ -62,21 +73,22 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
+    // 댓글 정보 부럴오기
     fetch("http://localhost:3001/models/json/commentList.json")
-    .then(res => res.json())
-    .then(jsonData => jsonData.items)
-    .then(items => {
+    .then( res => res.json() )
+    .then( jsonData => jsonData.items )
+    .then( items => {
         createComment(items.filter(item => item.postId == postId));
     }).then(()=>init());
 
-    function createComment(comments) {
+    const createComment = (comments) => {
         comments.forEach(element => {
             const container = document.getElementById('comment-list');
             container.innerHTML += makeCommentTag(element);
         });
-    }
+    };
 
-    function makeCommentTag(item) {
+    const makeCommentTag = (item) => {
         return `
             <div id="comment-${item.commentId}" class="comment">
                 <div class="comment-info">
@@ -111,7 +123,7 @@ window.onload = function() {
 
 }
 
-function init() {
+const init = () => {
     const postDeleteBtn = document.getElementById('post-delete-btn');
     const commentModifyBtn = document.getElementsByClassName('comment-modify-btn');
     const commentDeleteBtn = document.getElementsByClassName('comment-delete-btn');
@@ -131,27 +143,27 @@ function init() {
         location.href='/board';
     })
 
-    postDeleteBtn.addEventListener('click', function() {
+    postDeleteBtn.addEventListener('click', () => {
         postDeleteModal.classList.add('on');
     })
 
-    postModalCancelBtn.addEventListener('click', function() {
+    postModalCancelBtn.addEventListener('click', () => {
         postDeleteModal.classList.remove('on');
     })
 
     // 게시물 삭제 모달 > 확인 버튼
-    postModalConfirmBtn.addEventListener('click', function() {
+    postModalConfirmBtn.addEventListener('click', () => {
         deletePost();
     })
 
     // 댓글 등록 버튼
-    commentBtn.addEventListener('click', function() {
+    commentBtn.addEventListener('click', () => {
         postComment();
     });
 
     // 댓글 수정 버튼
-    Array.from(commentModifyBtn).forEach(item => {
-        item.addEventListener('click', function() {
+    Array.from(commentModifyBtn).forEach( item => {
+        item.addEventListener('click', () => {
             var prevText = item.parentNode.parentNode
                     .previousElementSibling.lastElementChild
                     .lastElementChild.firstElementChild.innerText;
@@ -166,32 +178,32 @@ function init() {
     })
 
     // 댓글 수정 등록 버튼
-    commentModifyFetchBtn.addEventListener('click', function() {
+    commentModifyFetchBtn.addEventListener('click', () => {
         putComment();
     })
 
     let selectedCommentId = 0;
 
     // 댓글 삭제 버튼
-    Array.from(commentDeleteBtn).forEach(item => {
-        item.addEventListener('click', function() {
+    Array.from(commentDeleteBtn).forEach( item => {
+        item.addEventListener('click', () => {
             commentDeleteModal.classList.add('on');
             selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
             console.log(selectedCommentId);
         })
     })
 
-    commentModalCancelBtn.addEventListener('click', function() {
+    commentModalCancelBtn.addEventListener('click', () => {
         commentDeleteModal.classList.remove('on');
     })
 
     // 댓글 삭제 모달 > 확인 버튼
-    commentModalConfirmBtn.addEventListener('click', function() {
+    commentModalConfirmBtn.addEventListener('click', () => {
         deleteComment();
     })
 
     // 댓글 유효성 검사
-    commentInput.addEventListener('keyup', function() {
+    commentInput.addEventListener('keyup', () => {
         commentFlag = false;
         if(commentInput.value.length == 0) {
 
@@ -201,7 +213,7 @@ function init() {
         btnActive();
     })
 
-    function btnActive() {
+    const btnActive = () => {
         if(commentFlag) {
             commentBtn.classList.remove('btn-inactive');
             commentBtn.classList.add('btn-active');
@@ -219,7 +231,7 @@ function init() {
 
     const postId = new URLSearchParams(window.location.search).get('postId');
 
-    function deletePost() {
+    const deletePost = () => {
         fetch(`http://localhost:3001/post/${postId}`, {
             method: 'DELETE',
             headers: {},
@@ -229,7 +241,7 @@ function init() {
         .then(window.location.href = '/board');
     }
 
-    function postComment() {
+    const postComment = () => {
         // 왜 formData 로 받으면 body가 비워져있을까...?
         // const formData = new FormData();
         // formData.append('postId', postId);
@@ -256,7 +268,7 @@ function init() {
         .then(window.location.href = `/postDetail?postId=${postId}`);
     }
 
-    function deleteComment() {
+    const deleteComment = () => {
         fetch(`http://localhost:3001/comment/${postId}/${selectedCommentId}`, {
             method: 'DELETE',
             headers: {},
@@ -266,7 +278,7 @@ function init() {
         .then(window.location.href = `/postDetail?postId=${postId}`);
     }
 
-    function putComment() {
+    const putComment = () => {
         const formData = new FormData();
         formData.append('comment', commentInput.value);
         formData.append('time', '2024-04-30 12:00:00');

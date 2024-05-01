@@ -26,12 +26,12 @@ let nicknameFlag = false;
 
 const signinBtn = document.getElementById('signin-btn');
 
-profileImgDiv.addEventListener('click', function() {
+profileImgDiv.addEventListener('click', () => {
     profileUploadBtn.click();
 });
 
 // 프로필 사진 설정
-profileUploadBtn.addEventListener('change', function(e) {
+profileUploadBtn.addEventListener('change', () => {
     var reader = new FileReader();
     
     if(profileUploadBtn.files.length > 0) {
@@ -55,7 +55,7 @@ profileUploadBtn.addEventListener('change', function(e) {
 });
 
 // 이메일 입력 유효성 검사
-emailInput.addEventListener('keyup', function() {
+emailInput.addEventListener('keyup', () => {
     emailFlag = false;
     if(emailInput.value.length == 0) {
         emailHelper.innerText = "* 이메일을 입력해주세요";
@@ -68,15 +68,15 @@ emailInput.addEventListener('keyup', function() {
     btnActive();
 });
 
-function idLength(value) {
+const idLength = (value) => {
     return value.length >= 3;
 }
-function emailForm(value) {
+const emailForm = (value) => {
     return value.indexOf('@') > 0 && value.indexOf('@') < value.length-1;
 }
 
 // 패스워드 유효성 검사
-passwordInput.addEventListener('keyup', function() {
+passwordInput.addEventListener('keyup', () => {
     passwordFlag = false;
     if(passwordInput.value.length == 0) {
         passwordHelper.innerText = "* 비밀번호를 입력해주세요."
@@ -89,12 +89,12 @@ passwordInput.addEventListener('keyup', function() {
     btnActive();
 });
 
-function passwordValidator(value) {
+const passwordValidator = (value) => {
     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value);
 }
 
 // 비밀번호 확인 유효성 검사
-passwordCheckInput.addEventListener('keyup', function() {
+passwordCheckInput.addEventListener('keyup', () => {
     passwordCheckFlag = false;
     if(passwordCheckInput.value.length == 0) {
         passwordCheckHelper.innerText = "* 비밀번호를 한번 더 입력해주세요."
@@ -110,7 +110,7 @@ passwordCheckInput.addEventListener('keyup', function() {
 })
 
 // 닉네임 유효성 검사
-nicknameInput.addEventListener('keyup', function() {
+nicknameInput.addEventListener('keyup', () => {
     nicknameFlag = false;
     if(nicknameInput.value.length == 0) {
         nicknameHelper.innerText = "* 닉네임을 입력해주세요.";
@@ -125,7 +125,7 @@ nicknameInput.addEventListener('keyup', function() {
     btnActive();
 })
 
-function btnActive() {
+const btnActive = () => {
     if(profileFlag && emailFlag && passwordFlag && passwordCheckFlag && nicknameFlag) {
         signinBtn.classList.remove('btn-inactive');
         signinBtn.classList.add('btn-active');
@@ -137,7 +137,7 @@ function btnActive() {
     }
 }
 
-function checkForm() {
+const checkForm = () => {
     if(btnActive()) {
         sendFormData();
         location.href='/login';
@@ -148,28 +148,22 @@ function checkForm() {
     }
 }
 
-document.getElementById('prev-btn').addEventListener('click', function() {
+document.getElementById('prev-btn').addEventListener('click', () => {
     location.href='/login';
 })
 
 let userList = "";
-loadUserList();
-function loadUserList() {
-    return fetch("http://localhost:3001/models/json/userList.json")
-        .then( (res) => res.json())
-        .then( (json) => json.items);
-}
+fetch("http://localhost:3001/models/json/userList.json")
+    .then( (res) => res.json())
+    .then( (json) => json.items)
+    .then( items => userList = items );
 
-loadUserList().then((items) => {
-    userList = items;
-})
-
-function checkEmail(input) {
+const checkEmail = (input) => {
     return userList.map((item) => item.email)
         .find(email=>email === input);
 }
 
-emailInput.addEventListener('change', function() {
+emailInput.addEventListener('change', () => {
     if(checkEmail(emailInput.value)) {
         emailHelper.innerText = "* 중복된 이메일 입니다.";
         emailFlag = false;
@@ -178,12 +172,12 @@ emailInput.addEventListener('change', function() {
     }
 })
 
-function checkNickname(input) {
+const checkNickname = (input) => {
     return userList.map((item) => item.nickName)
         .find(nickname => nickname === input);
 }
 
-nicknameInput.addEventListener('change', function() {
+nicknameInput.addEventListener('change', () => {
     if(checkNickname(nicknameInput.value)) {
         nicknameHelper.innerText = "* 중복된 닉네임 입니다.";
         nicknameFlag = false;
@@ -192,7 +186,7 @@ nicknameInput.addEventListener('change', function() {
     }
 })
 
-function sendFormData() {
+const sendFormData = () => {
     fetch("http://localhost:3001/models/json/userList.json", {
         method: 'POST',
         headers: {
