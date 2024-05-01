@@ -1,7 +1,7 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const postController = require("../controllers/postController");
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const router = express.Router();
 const multer = require('multer');
 
@@ -14,6 +14,7 @@ const MIME_TYPE_MAP = {
     "image/jpg": "jpg",
 };
 
+// 파일 업로드를 위한 모듈. 파일 처리
 const upload = multer({ 
     storage: multer.diskStorage({
         destination: "../public/sources",
@@ -27,29 +28,24 @@ const upload = multer({
             // 확장자 제거한 파일명 추출
             file.originalname = file.originalname.split(`.${ext}`)[0];
     
-            cb(null, file.originalname + '.' + ext);
+            cb(null, `${file.originalname}.${ext}`);
         },
     }),
 });
 
-// router.get('/models/json/postList.json', (req, res) => {
-//     postController.getPostList(req, res);
-// });
-
-router.get('/models/json/postDetail.json', (req, res) => {
-    postController.getPostDetail(req, res);
-});
-
-router.get('/models/json/commentList.json', (req, res) => {
-    postController.getCommentList(req, res);
-});
-
+// user controller
 router.get('/models/json/userList.json', (req, res) => {
     userController.getUserList(req, res);
 });
 
 router.post('/models/json/userList.json', (req, res) => {
     userController.postUserList(req, res);
+});
+
+// post controller
+// post
+router.get('/models/json/postDetail.json', (req, res) => {
+    postController.getPostDetail(req, res);
 });
 
 router.post('/models/json/postDetail.json', upload.single("image"), (req, res) => {
@@ -63,6 +59,11 @@ router.put('/post/:id', upload.single("image"), (req, res) => {
 
 router.delete('/post/:id', (req, res) => {
     postController.deletePost(req, res);
+});
+
+// comment
+router.get('/models/json/commentList.json', (req, res) => {
+    postController.getCommentList(req, res);
 });
 
 router.post('/comment/:postId', (req, res) => {
