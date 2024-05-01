@@ -17,21 +17,13 @@ writeBtn.addEventListener('click', function() {
     location.href='/postWrite';
 })
 
-function loadPostList() {
-    return fetch("http://localhost:3001/models/json/postDetail.json")
-        .then( (res) => res.json())
-        .then( (json) => json.items);
-}
-
-loadPostList().then( (items) => {
-    console.log(items);
-    displayPostList(items);
-})
-
-function displayPostList(items) {
-    const container = document.getElementById('post-list');
-    container.innerHTML = items.map((item) => createPostListHTML(item)).join("");
-}
+fetch("http://localhost:3001/models/json/postDetail.json")
+    .then( res => res.json() )
+    .then( json => json.items )
+    .then( items => {
+        const container = document.getElementById('post-list');
+        container.innerHTML = items.map((item) => createPostListHTML(item)).join("");
+    });
 
 function createPostListHTML(item) {
     return `
