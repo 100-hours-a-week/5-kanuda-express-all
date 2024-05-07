@@ -33,5 +33,25 @@ loginBtn.addEventListener('click', () => {
         helperText.innerText = "* 입력하신 계정 정보가 정확하지 않았습니다.";
     } else {
         helperText.innerText = "";
+
+        // 로그인 로직 추가
+        fetch('http://localhost:3001/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Origin': 'http://localhost:3000',
+            },
+            body: JSON.stringify({
+                email: emailInput.value,
+            })
+        })
+        .then(response => {
+            if(response.ok) {
+                location.href = '/board';
+            } else {
+                alert('로그인 실패');
+            }
+        })
     }
 })

@@ -37,4 +37,15 @@ module.exports = {
             })
         })
     },
+    postLogin(req, res) {
+        const userEmail = req.body.email;
+        res.cookie('isLogin', true, { maxAge : 1000 * 60 * 60 });
+        res.cookie('userEmail', userEmail, { maxAge : 1000 * 60 * 60 });
+        res.send('login success');
+    },
+    postLogout(req, res) {
+        res.cookie('isLogin', false);
+        res.clearCookie('userEmail');
+        res.send('logout');
+    }
 };

@@ -7,3 +7,13 @@ document.getElementById('header-img').addEventListener('click', () => {
         drop.style.display = 'none';
     }
 })
+
+document.getElementById('logout').addEventListener('click', () => {
+    fetch('http://localhost:3001/logout', {
+        method: 'POST',
+        credentials: 'include',
+    })
+    .then(response => {
+        location.href = '/login';
+    })
+})
