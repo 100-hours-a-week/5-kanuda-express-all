@@ -201,7 +201,8 @@ const init = () => {
         item.addEventListener('click', () => {
             let commentText = item.parentNode.parentNode
             .previousElementSibling.lastElementChild;
-            let writerName = commentText.firstElementChild.firstElementChild.firstElementChild.firstElementChild.innerText;
+            let writerName = commentText.firstElementChild.firstElementChild
+                        .firstElementChild.firstElementChild.innerText;
             getEmailByWriterName(writerName)
             .then(email => {
                 if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
@@ -237,7 +238,8 @@ const init = () => {
         item.addEventListener('click', () => {
             let commentText = item.parentNode.parentNode
             .previousElementSibling.lastElementChild;
-            let writerName = commentText.firstElementChild.firstElementChild.firstElementChild.firstElementChild.innerText;
+            let writerName = commentText.firstElementChild.firstElementChild.firstElementChild
+                            .firstElementChild.innerText;
             getEmailByWriterName(writerName)
             .then(email => {
                 if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
