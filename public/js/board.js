@@ -50,3 +50,13 @@ const numFormat = (num) => {
     }
     return num;
 }
+
+document.getElementById('test').addEventListener('click', () => {
+    fetch('http://localhost:3001/test', {
+        method: 'GET',
+        credentials: 'include',
+    })
+    .then(response => {
+        console.log(response);
+    })
+})

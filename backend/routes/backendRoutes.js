@@ -5,6 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -13,6 +14,12 @@ router.use(cors({
     credentials: true,
 }));
 router.use(cookieParser());
+router.use(session({
+    key: 'loginData',
+    secret: 'sessionKey',
+    resave: false,
+    saveUninitialized: true,
+}));
 
 const MIME_TYPE_MAP = {
     "image/png": "png",
@@ -54,6 +61,10 @@ router.post('/login', (req, res) => {
 
 router.post('/logout', (req, res) => {
     userController.postLogout(req, res);    
+})
+
+router.get('/test', (req, res) => {
+    userController.getTest(req, res);
 })
 
 // post controller

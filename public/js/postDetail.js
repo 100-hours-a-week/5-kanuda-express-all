@@ -11,25 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                         .map(item => createPostDetail(item))                            
                                         .join("");
         });
-    
-    // // json 에서 id 값 가져와서 화면 그리기
-    // function loadPostDetail() {
-    //     return fetch("http://localhost:3001/models/json/postDetail.json")
-    //         .then( (res) => res.json())
-    //         .then( (json) => json.items);
-    // }
-
-    // loadPostDetail().then((items) => {
-    //     displayPostDetail(items);
-    // });
-    
-
-    // function displayPostDetail(items) {
-    //     const container = document.getElementById('post');
-    //     container.innerHTML = items.filter((item) => item.postId == postId)
-    //                                 .map(item => createPostDetail(item))                            
-    //                                 .join("");
-    // }
 
     const createPostDetail = item => {
         return `
@@ -42,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <img class="writer-img" src="../sources/${item.writerPic}">
                     </div>
                     <div class="writer-name">
-                        <p><b>${item.writerName}</b></p>
+                        <p id='writer-name'><b>${item.writerName}</b></p>
                     </div>
                     <div class="write-time">
                         <p>2${item.time}</p>
@@ -139,13 +120,48 @@ const init = () => {
     const commentModifyFetchBtn = document.getElementById('comment-modify-btn');
     let commentFlag = false;
 
+    const writerName = document.getElementById('writer-name');
+
     document.getElementById('prev-btn').addEventListener('click', function() {
         location.href='/board';
     })
 
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    // 게시글 삭제 버튼
     postDeleteBtn.addEventListener('click', () => {
-        postDeleteModal.classList.add('on');
+        // 로그인 정보와 게시글 작성자 비교
+        getEmailByWriterName(writerName.innerText)
+        .then(email => {
+            if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                console.log('test');
+                postDeleteModal.classList.add('on');
+            } else {
+                // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                alert('게시글 작성자가 아닙니다.');
+            }
+        })
     })
+
+    // writername 으로 user email 반환하는 함수
+    function getEmailByWriterName(writerName) {
+        return fetch('http://localhost:3001/models/json/userList.json')
+        .then( res => res.json() )
+        .then( json => json.items )
+        .then( items => {    
+            const writer = items.find(item => item.nickName == writerName);
+            if(writer) {
+                return writer.email;
+            } else {
+                throw new Error('작성자를 찾을 수 없습니다.');
+            }
+        });
+    }
 
     postModalCancelBtn.addEventListener('click', () => {
         postDeleteModal.classList.remove('on');
