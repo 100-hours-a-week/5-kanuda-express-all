@@ -145,6 +145,9 @@ const init = () => {
                 alert('게시글 작성자가 아닙니다.');
             }
         })
+        .catch(error => {
+            alert('게시글 작성자가 아닙니다.');
+        })
     })
 
     // 게시글 삭제 버튼
@@ -158,6 +161,9 @@ const init = () => {
                 // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
                 alert('게시글 작성자가 아닙니다.');
             }
+        })
+        .catch(error => {
+            alert('게시글 작성자가 아닙니다.');
         })
     })
 
@@ -193,16 +199,29 @@ const init = () => {
     // 댓글 수정 버튼
     Array.from(commentModifyBtn).forEach( item => {
         item.addEventListener('click', () => {
-            var prevText = item.parentNode.parentNode
-                    .previousElementSibling.lastElementChild
-                    .lastElementChild.firstElementChild.innerText;
-            document.getElementById('comment-input').value = prevText;
-            document.getElementById('comment-input').focus();
+            let commentText = item.parentNode.parentNode
+            .previousElementSibling.lastElementChild;
+            let writerName = commentText.firstElementChild.firstElementChild.firstElementChild.firstElementChild.innerText;
+            getEmailByWriterName(writerName)
+            .then(email => {
+                if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                    var prevText = commentText
+                                    .lastElementChild.firstElementChild.innerText;
+                    document.getElementById('comment-input').value = prevText;
+                    document.getElementById('comment-input').focus();
 
-            commentBtn.style.display = 'none';
-            commentModifyFetchBtn.style.display = 'block';
+                    commentBtn.style.display = 'none';
+                    commentModifyFetchBtn.style.display = 'block';
 
-            selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+                    selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+                } else {
+                    // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                    alert('게시글 작성자가 아닙니다.');
+                }
+            })
+            .catch(error => {
+                alert('댓글 작성자가 아닙니다.');
+            })
         })
     })
 
