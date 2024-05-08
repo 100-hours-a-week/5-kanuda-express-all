@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </div>
                 <div>
-                    <button id="post-modify-btn" class="btn" onclick="window.location.href='/postEdit?postId=${item.postId}'">수정</button>
+                    <button id="post-modify-btn" class="btn">수정</button>
                     <button id="post-delete-btn" class="btn">삭제</button>
                 </div>
             </div>
@@ -105,6 +105,7 @@ window.onload = function() {
 }
 
 const init = () => {
+    const postModifyBtn = document.getElementById('post-modify-btn');
     const postDeleteBtn = document.getElementById('post-delete-btn');
     const commentModifyBtn = document.getElementsByClassName('comment-modify-btn');
     const commentDeleteBtn = document.getElementsByClassName('comment-delete-btn');
@@ -133,13 +134,25 @@ const init = () => {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
+    postModifyBtn.addEventListener('click', () => {
+        // 로그인 정보와 게시글 작성자 비교
+        getEmailByWriterName(writerName.innerText)
+        .then(email => {
+            if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                location.href = `/postEdit?postId=&{postId}`;
+            } else {
+                // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                alert('게시글 작성자가 아닙니다.');
+            }
+        })
+    })
+
     // 게시글 삭제 버튼
     postDeleteBtn.addEventListener('click', () => {
         // 로그인 정보와 게시글 작성자 비교
         getEmailByWriterName(writerName.innerText)
         .then(email => {
             if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
-                console.log('test');
                 postDeleteModal.classList.add('on');
             } else {
                 // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까

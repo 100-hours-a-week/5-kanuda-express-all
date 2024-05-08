@@ -39,16 +39,16 @@ module.exports = {
     },
     postLogin(req, res) {
         // cookie 로그인
-        const userEmail = req.body.email;
-        res.cookie('isLogin', true, { maxAge : 1000 * 60 * 60 });
-        res.cookie('userEmail', userEmail, { maxAge : 1000 * 60 * 60 });
-        res.send('login success');
+        // const userEmail = req.body.email;
+        // res.cookie('isLogin', true, { maxAge : 1000 * 60 * 60 });
+        // res.cookie('userEmail', userEmail, { maxAge : 1000 * 60 * 60 });
+        // res.send('login success');
         
         // session 로그인
-        // const userEmail = req.body.email;
-        // req.session.user = { email: userEmail };
-        // console.log(req.session);
-        // res.send('login success');
+        const userEmail = req.body.email;
+        req.session.user = { email: userEmail };
+        console.log(req.session);
+        res.send('login success');
     },
     postLogout(req, res) {
         // cookie 로그인
