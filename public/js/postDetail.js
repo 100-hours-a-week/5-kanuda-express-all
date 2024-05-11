@@ -235,9 +235,23 @@ const init = () => {
     // 댓글 삭제 버튼
     Array.from(commentDeleteBtn).forEach( item => {
         item.addEventListener('click', () => {
-            commentDeleteModal.classList.add('on');
-            selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
-            console.log(selectedCommentId);
+            let commentText = item.parentNode.parentNode
+            .previousElementSibling.lastElementChild;
+            let writerName = commentText.firstElementChild.firstElementChild.firstElementChild.firstElementChild.innerText;
+            getEmailByWriterName(writerName)
+            .then(email => {
+                if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                    commentDeleteModal.classList.add('on');
+                    selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+                    console.log(selectedCommentId);
+                } else {
+                    // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                    alert('게시글 작성자가 아닙니다.');
+                }
+            })
+            .catch(error => {
+                alert('댓글 작성자가 아닙니다.');
+            })
         })
     })
 
