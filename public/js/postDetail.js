@@ -11,25 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                         .map(item => createPostDetail(item))                            
                                         .join("");
         });
-    
-    // // json 에서 id 값 가져와서 화면 그리기
-    // function loadPostDetail() {
-    //     return fetch("http://localhost:3001/models/json/postDetail.json")
-    //         .then( (res) => res.json())
-    //         .then( (json) => json.items);
-    // }
-
-    // loadPostDetail().then((items) => {
-    //     displayPostDetail(items);
-    // });
-    
-
-    // function displayPostDetail(items) {
-    //     const container = document.getElementById('post');
-    //     container.innerHTML = items.filter((item) => item.postId == postId)
-    //                                 .map(item => createPostDetail(item))                            
-    //                                 .join("");
-    // }
 
     const createPostDetail = item => {
         return `
@@ -42,14 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         <img class="writer-img" src="../sources/${item.writerPic}">
                     </div>
                     <div class="writer-name">
-                        <p><b>${item.writerName}</b></p>
+                        <p id='writer-name'><b>${item.writerName}</b></p>
                     </div>
                     <div class="write-time">
                         <p>2${item.time}</p>
                     </div>
                 </div>
                 <div>
-                    <button id="post-modify-btn" class="btn" onclick="window.location.href='/postEdit?postId=${item.postId}'">수정</button>
+                    <button id="post-modify-btn" class="btn">수정</button>
                     <button id="post-delete-btn" class="btn">삭제</button>
                 </div>
             </div>
@@ -124,6 +105,7 @@ window.onload = function() {
 }
 
 const init = () => {
+    const postModifyBtn = document.getElementById('post-modify-btn');
     const postDeleteBtn = document.getElementById('post-delete-btn');
     const commentModifyBtn = document.getElementsByClassName('comment-modify-btn');
     const commentDeleteBtn = document.getElementsByClassName('comment-delete-btn');
@@ -139,13 +121,66 @@ const init = () => {
     const commentModifyFetchBtn = document.getElementById('comment-modify-btn');
     let commentFlag = false;
 
+    const writerName = document.getElementById('writer-name');
+
     document.getElementById('prev-btn').addEventListener('click', function() {
         location.href='/board';
     })
 
-    postDeleteBtn.addEventListener('click', () => {
-        postDeleteModal.classList.add('on');
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    postModifyBtn.addEventListener('click', () => {
+        // 로그인 정보와 게시글 작성자 비교
+        getEmailByWriterName(writerName.innerText)
+        .then(email => {
+            if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                location.href = `/postEdit?postId=&{postId}`;
+            } else {
+                // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                alert('게시글 작성자가 아닙니다.');
+            }
+        })
+        .catch(error => {
+            alert('게시글 작성자가 아닙니다.');
+        })
     })
+
+    // 게시글 삭제 버튼
+    postDeleteBtn.addEventListener('click', () => {
+        // 로그인 정보와 게시글 작성자 비교
+        getEmailByWriterName(writerName.innerText)
+        .then(email => {
+            if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                postDeleteModal.classList.add('on');
+            } else {
+                // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                alert('게시글 작성자가 아닙니다.');
+            }
+        })
+        .catch(error => {
+            alert('게시글 작성자가 아닙니다.');
+        })
+    })
+
+    // writername 으로 user email 반환하는 함수
+    function getEmailByWriterName(writerName) {
+        return fetch('http://localhost:3001/models/json/userList.json')
+        .then( res => res.json() )
+        .then( json => json.items )
+        .then( items => {    
+            const writer = items.find(item => item.nickName == writerName);
+            if(writer) {
+                return writer.email;
+            } else {
+                throw new Error('작성자를 찾을 수 없습니다.');
+            }
+        });
+    }
 
     postModalCancelBtn.addEventListener('click', () => {
         postDeleteModal.classList.remove('on');
@@ -164,16 +199,30 @@ const init = () => {
     // 댓글 수정 버튼
     Array.from(commentModifyBtn).forEach( item => {
         item.addEventListener('click', () => {
-            var prevText = item.parentNode.parentNode
-                    .previousElementSibling.lastElementChild
-                    .lastElementChild.firstElementChild.innerText;
-            document.getElementById('comment-input').value = prevText;
-            document.getElementById('comment-input').focus();
+            let commentText = item.parentNode.parentNode
+            .previousElementSibling.lastElementChild;
+            let writerName = commentText.firstElementChild.firstElementChild
+                        .firstElementChild.firstElementChild.innerText;
+            getEmailByWriterName(writerName)
+            .then(email => {
+                if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                    var prevText = commentText
+                                    .lastElementChild.firstElementChild.innerText;
+                    document.getElementById('comment-input').value = prevText;
+                    document.getElementById('comment-input').focus();
 
-            commentBtn.style.display = 'none';
-            commentModifyFetchBtn.style.display = 'block';
+                    commentBtn.style.display = 'none';
+                    commentModifyFetchBtn.style.display = 'block';
 
-            selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+                    selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+                } else {
+                    // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                    alert('게시글 작성자가 아닙니다.');
+                }
+            })
+            .catch(error => {
+                alert('댓글 작성자가 아닙니다.');
+            })
         })
     })
 
@@ -187,9 +236,24 @@ const init = () => {
     // 댓글 삭제 버튼
     Array.from(commentDeleteBtn).forEach( item => {
         item.addEventListener('click', () => {
-            commentDeleteModal.classList.add('on');
-            selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
-            console.log(selectedCommentId);
+            let commentText = item.parentNode.parentNode
+            .previousElementSibling.lastElementChild;
+            let writerName = commentText.firstElementChild.firstElementChild.firstElementChild
+                            .firstElementChild.innerText;
+            getEmailByWriterName(writerName)
+            .then(email => {
+                if(getCookie('isLogin') == 'true' && getCookie('userEmail') == email) {
+                    commentDeleteModal.classList.add('on');
+                    selectedCommentId = item.parentNode.parentNode.parentNode.id.split("-")[1];
+                    console.log(selectedCommentId);
+                } else {
+                    // 애초에 권한 있는 사람만 버튼이 보이게 해야하는거 아닐까
+                    alert('게시글 작성자가 아닙니다.');
+                }
+            })
+            .catch(error => {
+                alert('댓글 작성자가 아닙니다.');
+            })
         })
     })
 
